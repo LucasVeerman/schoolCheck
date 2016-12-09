@@ -18,7 +18,12 @@ $action=isset($_GET['action'])?$_GET['action']:'home';
 switch($action){
     
     case 'admin':
+        
         $cms_action = isset($_GET['cms_action'])?$_GET['cms_action']:"show";
+        
+        $submit_update = isset($_POST['submit_update'])? 1:0;
+        $cms_action = $submit_update?'save':$cms_action;
+        
         switch($cms_action)
         {
             case 'show':
@@ -26,18 +31,26 @@ switch($action){
                 $templateParser->assign('result',$result);
                 $templateParser->display('cms_show.tpl');
             break;
-            case 'delete':
+            case "delete":
                 $id = $_GET['id'];
                 include 'model/delete_item.php';
             break;
             case 'insert':
-            
+                $templateParser->display('cms_insert.tpl');
             break;
             case 'edit':
-        
+                $id = isset($_GET['id'])?$_GET['id']:0;
+                include 'model/select_one.php';
+//                include 'model/update.php';
+                $templateParser->assign('result',$result);
+                $templateParser->display('edit.tpl');
+            break;
+            case 'save':
+                //call model to save item: UPDATE
+                
+                //go to admin view
             break;
         }
        
     break;
 }
-
